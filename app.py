@@ -52,7 +52,7 @@ def sign_up():
         "profile_info": ""                                          # 프로필 한 마디
     }
     db.users.insert_one(doc)
-    print(f'id: {username_receive}, pw : {password_receive}')
+    # print(f'id: {username_receive}, pw : {password_receive}')
     return jsonify({'result': 'success'})
 
 # 아이디 중복 확인
@@ -179,7 +179,7 @@ def post_write():
 @app.route('/post_view/<ID>')
 def post_view(ID):
     load = db.posting.find_one({'ID':int(ID)},{'_id':False})
-    print(load)
+    # print(load)
     return render_template('detail.html', post=load)
 
 
@@ -255,13 +255,13 @@ def update_like():
 
         # 누른사람 걸러내기
         like_list = db.like.find_one({'ID': ID}, {'_id': False})
-        print(f"누른사람 : {type(like_list['user'])}")
+        # print(f"누른사람 : {type(like_list['user'])}")
         for i in like_list['user']:
             if i == userinfo['username']:
                 return jsonify({'result': 'fail','msg': '이미 눌렀습니다.'})
 
         # 누른사람 추가하기
-        print(f"추가할 사람 : {userinfo['username']}")
+        # print(f"추가할 사람 : {userinfo['username']}")
         db.like.update_one({'ID': ID}, {'$push': {'user': userinfo['username']}})
 
         # 추천 +1
