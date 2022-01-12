@@ -14,9 +14,6 @@
       rel="stylesheet"
     />
     <style>
-      .hidden {
-        display: none !important;
-      }
       a {
         color: inherit;
         text-decoration: none;
@@ -180,12 +177,22 @@
         height: 100%;
       }
       #sidebar {
-        width: 300px;
+        width: 250px;
         background-color: #202540;
+        display: flex;
+        flex-direction: column;
+        transition: .3s;
       }
-      #sidebar > ul {
+
+      #sidebar.hidden {
+        transform: translateX(-300px);
+      }
+
+      #sidebar ul {
         margin-left: 50px;
+        color: white;
       }
+
       #sidebar li {
         padding: 20px;
         margin-top: 80px;
@@ -193,15 +200,28 @@
         font-weight: bold;
         transition: 0.3s;
       }
+
+      #sidebar li a {
+        color: white;
+        text-decoration: none;
+      }
+
       #sidebar li.active {
         background-color: #fff;
         color: #202540;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
       }
+
+      #sidebar li.active a {
+        color: #202540;
+      }
+
       #sidebar li:hover {
         background-color: rgba(255, 255, 255, 0.5);
         color: #202540;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
       }
     </style>
   </head>
@@ -259,6 +279,24 @@
       </main>
     </div>
     <script>
+      // 사이드바
+      let isSidebar = true;
+      document.querySelector(".hamburger").addEventListener("click", () => {
+        if (isSidebar) {
+          document.querySelector("#sidebar").classList.add("hidden");
+          document.querySelector("#contents").style.gridTemplateColumns =
+            "1fr 1fr 1fr 1fr 1fr";
+          document.querySelector("#contents").style.marginLeft = "-250px";
+          isSidebar = false;
+        } else {
+          document.querySelector("#sidebar").classList.remove("hidden");
+          document.querySelector("#contents").style.gridTemplateColumns =
+            "1fr 1fr 1fr 1fr";
+          document.querySelector("#contents").style.marginLeft = "0px";
+          isSidebar = true;
+        }
+      });
+
       // 모달창
       const modal = document.querySelector(".modal");
       const modalContents = document.querySelector(".modal__contents");
