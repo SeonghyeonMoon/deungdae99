@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>상세페이지</title>
@@ -74,8 +74,10 @@
       /*제목 감싸는 부분*/
       .title {
         width: 80%;
-        margin: auto;
+        margin: 50px auto;
         padding-left: 30px;
+        font-size: 30px;
+        color: #202540;
       }
       /*제목*/
       h1 {
@@ -83,8 +85,8 @@
       }
       /*썸네일 들어갈 부분*/
       .img {
-        width: 80%;
-        height: 50vh;
+        width: 800px;
+        height: 600px;
         background-color: lightcoral;
         background-repeat:no-repeat;
         background-position: center;
@@ -92,53 +94,34 @@
         margin: auto;
         border-radius: 10px;
         background-image: url("{{post['Content']['img']}}");
-        border: 2px solid black;
       }
       /*포스팅 링크*/
       .post-link {
-        margin: auto;
-        width: 80%;
-        text-align: left;
+        margin-top: 50px;
+      }
+      .post-link a {
+        margin-top: 50px;
+        text-decoration: none;
+        color: #202540;
+        font-size: 30px;
       }
       /*좋아요 버튼*/
       .like {
         margin-top: 30px;
-        width: 10%;
-        height: 30px;
+        width: 200px;
+        height: 50px;
         background-color: #f50000;
         color: white;
         border-radius: 10px;
         border-width: 0px;
         font-weight: bold;
         cursor: pointer;
+        font-size: 25px;
       }
-      /*댓글 입력 칸*/
-      .comment {
+      .post-comment {
         margin-top: 20px;
-        width: 80%;
-        height: 80px;
-        padding: 5px;
-        overflow: hidden;
-        resize: none;
-        line-height: 15px;
-        border-radius: 10px;
-      }
-      /*댓글 작성 버튼*/
-      .comment_input {
-        margin: auto;
-        width: 15%;
-        height: 30px;
-        background-color: #202540;
-        color: white;
-        border-radius: 10px;
-        border-width: 0px;
-        font-weight: bold;
-      }
-      /*작성한 댓글들 보여줄 곳*/
-      .table {
-        width: 80%;
-        margin: 50px auto;
-        text-align: center;
+        color: #202540;
+        font-size: 20px;
       }
       .hidden {
         display: none;
@@ -194,8 +177,13 @@
         <div class="img"></div>
         <!--        포스팅 링크 들어갈 곳 -->
         <div class="post-link">
-          <h4><a href={{post['Content']['url']}} target="_blank">{{post['Content']['url']}}</a></h4>
+          <h4><a href={{post['Content']['url']}} target="_blank">링크</a></h4>
         </div>
+        <h4 class="post-comment ">작성자 설명</h4>
+        <p class="post-comment">
+          {{post['Content']['comment']}}
+        </p>
+
         <!--        좋아요 버튼-->
         <p>
           <button onclick="like({{post['ID']}})" class="like">추천 {{post['like']}}</button>
