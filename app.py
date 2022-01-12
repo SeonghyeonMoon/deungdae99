@@ -63,17 +63,32 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-# 회원 탈퇴
-@app.route('/api/sign_delete', methods=['POST'])
-def sing_delete():
-    pass
+# 회원탈퇴
+@app.route('/sign_delete', methods=['POST'])
+def sign_delete():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    password_receive = request.form['password_give']
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = list(db.users.find({'password': pw_hash}))
+
+    for name in result:
+        if payload['id'] == name['username']:
+            if name is not None:
+                db.users.delete_one({'username':payload['id']})
+                return jsonify({'msg': '삭제 되었습니다.','result': 'success'})
+            #실패시
+            else:
+                return jsonify({'result': 'fail', 'msg': '비밀번호가 일치하지 않습니다.'})
+
 
 # 포스팅 전체 글 불러오기
 @app.route('/')
 def home():
     posts = list(db.posting.find({},{'_id':False}))
-    len(posts)
-    return render_template('index.html', posting=posts, title='전체')
+    #len(posts)
+    return render_template('index.html', posting=posts)
 
 # 카테고리 별로 포스팅 목록 가져오기
 @app.route('/category/<val>')
@@ -178,7 +193,7 @@ def write_post():
         post = list(db.users.find({'Author':userinfo['username']}, {'_id': False}))
 
         # html 파일명이 어떻게 될지 몰라 임시지정
-        return render_template('imsi.html', posts=post)
+        return render_template('mypage.html', posts=post)
     except jwt.ExpiredSignatureError:
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
     except jwt.exceptions.DecodeError:
@@ -221,6 +236,11 @@ def update_like():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.users.find_one({"username": payload['id']}, {"_id": False})
+
+        # 로그인 안한 사람
+        if ID == '0':
+            return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+
         # 기존 like 수 가져오기
         old_like = db.posting.find_one({'ID': int(ID)}, {'_id': False})
         # print(f'올드 like : {old_like["like"]}')
@@ -235,7 +255,7 @@ def update_like():
 
         # 누른사람 걸러내기
         like_list = db.like.find_one({'ID': ID}, {'_id': False})
-        # print(f"누른사람 : {like_list['user']}")
+        print(f"누른사람 : {type(like_list['user'])}")
         for i in like_list['user']:
             if i == userinfo['username']:
                 return jsonify({'result': 'fail','msg': '이미 눌렀습니다.'})
