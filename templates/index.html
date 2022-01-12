@@ -242,11 +242,13 @@
         <!-- 여기 내부에 card들 들어올 예정 -->
         <section id="contents">
             {% for post in posting %}
-            <div class="card">
-                <h4>{{post['Title']}}</h4>
-                <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
-                <p class="description">{{post['Content']['comment']}}</p>
-            </div>
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <h4>{{post['Title']}}</h4>
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                </div>
+            </a>
             {% endfor %}
             <!--포스팅 추가 버튼-->
             <button id="postModal">포스팅하기</button>
