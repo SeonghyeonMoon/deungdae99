@@ -168,6 +168,7 @@ li {
     display: flex;
     align-items: center;
     color: white;
+    justify-content: space-between;
 }
 #header .hamburger {
     all: unset;
@@ -181,15 +182,38 @@ li {
     height: 40px;
 }
 #header .logo img {
-    height: 40px;
+    height: 60px;
 }
 #header .login {
-    all: unset;
     height: 50px;
     margin-right: 30px;
     margin-left: auto;
     font-size: 20px;
     font-weight: bold;
+}
+#header .left {
+    display: flex;
+}
+#header .login.hidden {
+    display: none !important;
+}
+#header .login_box {
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+}
+#hader .login_box .show_id {
+    all: unset;
+    margin-right: 30px;
+}
+#header .login_box #logout {
+    all: unset;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+#header .login_box a {
+    all: unset;
+    margin-right: 30px;
 }
 #main {
     flex: 1;
