@@ -63,6 +63,10 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+# 회원 탈퇴
+@app.route('/api/sign_delete', methods=['POST'])
+def sing_delete():
+    pass
 
 # 포스팅 전체 글 불러오기
 @app.route('/')
@@ -180,24 +184,22 @@ def write_post():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
-
-@app.route('/mypage/<username>')
+# 마이페이지
+@app.route('/mypage')
 def mypage():
-    pass
-
-@app.route('/user/<username>')
-def user(username):
-    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        userinfo = db.users.find_one({'username': payload['id']}, {'_id': 0})
+        posts = list(db.posting.find({'Author':userinfo['username']}, {'_id': False}))
+        # print(payload['id'], userinfo['username'])
+        # print(posts)
+        return render_template('mypage.html', myinfo=userinfo, posting=posts)
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
-        user_info = db.users.find_one({"username": username}, {"_id": False})
-        # html 파일명이 어떻게 될지 몰라 임시지정
-        return render_template('user.html', user_info=user_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
 
 # 프로필 업데이트 (미구현)
 @app.route('/update_profile', methods=['POST'])
@@ -263,6 +265,22 @@ def read_post():
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+
+
+# @app.route('/user/<username>')
+# def user(username):
+#     # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+#
+#         user_info = db.users.find_one({"username": username}, {"_id": False})
+#         # html 파일명이 어떻게 될지 몰라 임시지정
+#         return render_template('user.html', user_info=user_info, status=status)
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
+
 
 
 if __name__ == '__main__':
