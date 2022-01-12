@@ -178,7 +178,36 @@ li {
     font-size: 20px;
     font-weight: bold;
 }
+#header .login.hidden {
+    display: none;
+}
 
+#header .login_box.hidden {
+    display: none;
+}
+#header .login_box {
+    margin-left: auto;
+    margin-right: 30px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+}
+#header .login_box .show_id {
+    margin-right: 30px;
+}
+#header .login_box button {
+    all: unset;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+#header .login_box a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: #fff
+}
 #main {
     flex: 1;
     display: flex;
