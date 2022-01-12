@@ -1,0 +1,325 @@
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.wrap {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+/*모달 전체 적용*/
+.modal {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s;
+}
+
+/*모달 숨김 상태*/
+.hidden {
+    display: none;
+}
+
+/*모달 창에만 적용*/
+.modal__contents {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+    background-color: #202540;
+    position: relative;
+}
+
+/*.modal__contents select {*/
+/*    color: #000;*/
+/*}*/
+
+/*.modal__contents input {*/
+/*    color: #000;*/
+/*}*/
+
+.appear {
+    animation: appear 0.3s;
+}
+
+@keyframes appear {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+/*모달 헤더*/
+.modal__contents h2 {
+    margin-top: 30px;
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #f50000;
+}
+
+/*모달 인풋*/
+.modal__contents input {
+    width: 400px;
+    height: 40px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 15px;
+    outline: none;
+    caret-color: #ccc;
+}
+
+.modal__contents input:focus {
+    border: 2px solid #f50000;
+}
+
+.modal__contents h4 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    color: #fff;
+    text-align: left;
+    margin-left: 50px;
+}
+
+.modal__contents button {
+    width: 400px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #f50000;
+    margin-bottom: 30px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.modal__contents button:hover {
+    background-color: rgba(245, 0, 0, 0.5);
+}
+
+.modal__contents .log-in-btn {
+    margin-bottom: 20px;
+}
+
+.modal__contents .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+#header {
+    display: flex;
+    background-color: #202540;
+    height: 100px;
+    align-items: center;
+}
+
+#header .hamburger {
+    all: unset;
+    background: none;
+    margin: 0 30px;
+}
+
+#header .hamburger > i {
+    font-size: 50px;
+}
+
+#header .logo {
+    height: 40px;
+}
+
+#header .logo img {
+    height: 40px;
+}
+
+#header .sub_title {
+    margin-left: 30px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#header .id_box {
+    margin-right: 30px;
+    margin-left: auto;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#main {
+    display: flex;
+    height: 100%;
+}
+
+#sidebar {
+    width: 250px;
+    background-color: #202540;
+    display: flex;
+    flex-direction: column;
+    transition: .3s;
+}
+
+#sidebar.hidden {
+    transform: translateX(-300px);
+}
+
+#sidebar ul {
+    margin-left: 50px;
+    color: white;
+}
+
+#sidebar li {
+    padding: 20px;
+    margin-top: 80px;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+#sidebar li a {
+    color: white;
+    text-decoration: none;
+}
+
+#sidebar li.active {
+    background-color: #fff;
+    color: #202540;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+#sidebar li.active a {
+    color: #202540;
+}
+
+#sidebar li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #202540;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+a:link {
+    color: black;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #0c2d2d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #020101;
+    text-decoration: underline;
+}
+
+/*카드*/
+#contents {
+    transition: .3s;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+
+.card {
+    width: 250px;
+    height: 320px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/*마우스 커서 가져가면 그림자 확대*/
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+/*카드 썸네일(그림, 사진)*/
+.card .thumbnail {
+    width: 100%;
+    height: 150px;
+    background-color: #aaa;
+}
+
+/*카드 제목 부분*/
+.card_title {
+    width: 95%;
+    line-height: 50px;
+    display: block;
+    margin: auto;
+    font-weight: bold;
+}
+
+/*설명 부분*/
+.description {
+    width: 95%;
+    margin: auto;
+    font-size: 14px;
+    display: block;
+
+}
+
+/*게시물 작성 시간*/
+.card_time {
+    width: 95%;
+    margin: auto;
+    position: absolute;
+    left: 15px;
+    bottom: 45px;
+    font-size: 12px;
+}
+
+/*구분선*/
+hr {
+    height: 1px;
+    width: 230px;
+    border-style: solid;
+    border-color: #cccccc;
+    border-width: .5px;
+    border-bottom: 0px;
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+}
+
+/*좋아요 수*/
+.card_like {
+    position: absolute;
+    left: 20px;
+    bottom: 14px;
+    font-size: 14px;
+    display: inline;
+}
+
+/*작성자*/
+.card_author {
+    position: absolute;
+    bottom: 14px;
+    right: 20px;
+    font-size: 14px;
+    text-align: right;
+
+}
