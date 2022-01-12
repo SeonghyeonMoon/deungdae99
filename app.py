@@ -221,6 +221,11 @@ def update_like():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.users.find_one({"username": payload['id']}, {"_id": False})
+        
+        # 로그인 안한 사람
+        if ID == '0':
+            return jsonify({'result': 'fail', 'msg': '로그인 해주세요.'})
+        
         # 기존 like 수 가져오기
         old_like = db.posting.find_one({'ID': int(ID)}, {'_id': False})
         # print(f'올드 like : {old_like["like"]}')
