@@ -13,217 +13,7 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <style>
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      .wrap {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        color: #fff;
-      }
-      /*모달 전체 적용*/
-      .modal {
-        position: fixed;
-        background-color: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(4px);
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: 1s;
-      }
-
-      /*모달 숨김 상태*/
-      .hidden {
-        display: none;
-      }
-
-      /*모달 창에만 적용*/
-      .modal__contents {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-        border-radius: 10px;
-        background-color: #fff;
-        box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
-
-        text-align: center;
-        background-color: #202540;
-        position: relative;
-      }
-
-      /*.modal__contents select {*/
-      /*    color: #000;*/
-      /*}*/
-
-      /*.modal__contents input {*/
-      /*    color: #000;*/
-      /*}*/
-
-      .appear {
-        animation: appear 0.3s;
-      }
-
-      @keyframes appear {
-        from {
-          transform: translateY(100px);
-          opacity: 0;
-        }
-      }
-
-      /*모달 헤더*/
-      .modal__contents h2 {
-        margin-top: 30px;
-        font-size: 40px;
-        margin-bottom: 30px;
-        font-weight: bold;
-        color: #f50000;
-      }
-
-      /*모달 인풋*/
-      .modal__contents input {
-        width: 400px;
-        height: 40px;
-        margin-bottom: 30px;
-        border-radius: 20px;
-        border: 1px solid #ccc;
-        text-align: center;
-        font-size: 15px;
-        outline: none;
-        caret-color: #ccc;
-      }
-
-      .modal__contents input:focus {
-        border: 2px solid #f50000;
-      }
-
-      .modal__contents h4 {
-        margin-bottom: 10px;
-        font-weight: bold;
-        font-size: 15px;
-        color: #fff;
-        text-align: left;
-        margin-left: 50px;
-      }
-
-      .modal__contents button {
-        width: 400px;
-        height: 40px;
-        border-radius: 20px;
-        background-color: #f50000;
-        margin-bottom: 30px;
-        border: none;
-        color: #fff;
-        font-size: 18px;
-        transition: 0.3s;
-      }
-
-      .modal__contents button:hover {
-        background-color: rgba(245, 0, 0, 0.5);
-      }
-
-      .modal__contents .log-in-btn {
-        margin-bottom: 20px;
-      }
-
-      .modal__contents .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-      }
-
-      #header {
-        display: flex;
-        background-color: #202540;
-        height: 100px;
-        align-items: center;
-      }
-      #header .hamburger {
-        all: unset;
-        background: none;
-        margin: 0 30px;
-      }
-      #header .hamburger > i {
-        font-size: 50px;
-      }
-      #header .logo {
-        height: 40px;
-      }
-      #header .logo img {
-        height: 40px;
-      }
-      #header .sub_title {
-        margin-left: 30px;
-        font-size: 30px;
-        font-weight: bold;
-      }
-      #header .id_box {
-        margin-right: 30px;
-        margin-left: auto;
-        font-size: 30px;
-        font-weight: bold;
-      }
-      #main {
-        display: flex;
-        height: 100%;
-      }
-      #sidebar {
-        width: 250px;
-        background-color: #202540;
-        display: flex;
-        flex-direction: column;
-        transition: .3s;
-      }
-
-      #sidebar.hidden {
-        transform: translateX(-300px);
-      }
-
-      #sidebar ul {
-        margin-left: 50px;
-        color: white;
-      }
-
-      #sidebar li {
-        padding: 20px;
-        margin-top: 80px;
-        font-size: 20px;
-        font-weight: bold;
-        transition: 0.3s;
-      }
-
-      #sidebar li a {
-        color: white;
-        text-decoration: none;
-      }
-
-      #sidebar li.active {
-        background-color: #fff;
-        color: #202540;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-      }
-
-      #sidebar li.active a {
-        color: #202540;
-      }
-
-      #sidebar li:hover {
-        background-color: rgba(255, 255, 255, 0.5);
-        color: #202540;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-      }
-    </style>
+    <link rel="stylesheet" href="../static/mypage.css">
   </head>
   <body>
     <div class="wrap">
@@ -244,7 +34,7 @@
                 />
               </div>
             </div>
-            <button>회원탈퇴</button>
+            <button onclick="sign_delete()">회원탈퇴</button>
             <button id="closeModal">취소</button>
           </div>
         </div>
@@ -262,7 +52,7 @@
         </h1>
         <h2 class="sub_title">마이페이지</h2>
         <div class="id_box">
-          <h2><a href="/mypage.html">반갑습니다 {{ ID }}</a></h2>
+          <h2><a href={{url_for('mypage')}}>{{myinfo['username']}}님 반갑습니다</a></h2>
         </div>
       </header>
 
@@ -275,9 +65,25 @@
         </aside>
         <section id="contents">
           <!-- 여기 내부에 card들 들어올 예정 -->
+          {% for post in posting %}
+          <a href={{url_for('post_view', ID=post['ID'])}}>
+            <div class="card">
+              <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+              <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                %}</h4></div>
+              <p class="description">{{post['Content']['comment']}}</p>
+              <div class="card_time">{{post['Date']}}</div>
+              <hr class="card_divide">
+              <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+              <div class="card_author">{{post['Author']}}</div>
+            </div>
+          </a>
+          {% endfor %}
         </section>
       </main>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script>
       // 사이드바
       let isSidebar = true;
@@ -312,6 +118,26 @@
         document.querySelector(".login").classList.remove("hidden");
         document.querySelector(".post").classList.add("hidden");
       });
+      // 회원 탈퇴
+      function sign_delete() {
+        let pw = document.getElementById('input-password').value
+        console.log(pw)
+        $.ajax({
+          type: "POST",
+          url: "/sign_delete",
+          data: {password_give: pw},
+          success: function (response) {
+            if (response['result'] === 'success') {
+              alert(response['msg'])
+              document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+              location.replace('/')
+            }
+            if (response['result'] === 'fail') {
+              alert(response['msg'])
+            }
+          }
+        })
+      }
     </script>
   </body>
 </html>
