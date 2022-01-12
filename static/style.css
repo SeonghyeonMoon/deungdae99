@@ -389,6 +389,10 @@ hr {
     font-size: 14px;
     text-align: right;
 }
+#contents > a {
+    height: 320px;
+}
+
 /*a태그 밑줄, 색 변경*/
 a:link {
     color: black;

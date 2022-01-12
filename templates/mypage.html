@@ -46,7 +46,7 @@
         <h1 class="logo">
           <a href="/"
             ><img
-              src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg"
+              src="../static/logo.jpg"
               alt="logo"
           /></a>
         </h1>
@@ -75,7 +75,7 @@
               <div class="card_time">{{post['Date']}}</div>
               <hr class="card_divide">
               <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
-              <div class="card_author">{{post['Author']}}</div>
+              <button onclick="post_delete({{post['ID']}})" class="card_delete">삭제</button>
             </div>
           </a>
           {% endfor %}
@@ -134,6 +134,19 @@
             }
             if (response['result'] === 'fail') {
               alert(response['msg'])
+            }
+          }
+        })
+      }
+      function post_delete(id){
+        $.ajax({
+          type: "POST",
+          url: "/post_delete",
+          data: {id_give: id},
+          success: function (response) {
+            if (response['result'] === 'success') {
+              alert(response['msg'])
+              location.reload()
             }
           }
         })

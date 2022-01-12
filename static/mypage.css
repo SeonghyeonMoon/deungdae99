@@ -2,6 +2,9 @@ a {
     color: inherit;
     text-decoration: none;
 }
+#contents > a {
+    height: 321px;
+}
 
 .wrap {
     height: 100vh;
@@ -23,6 +26,7 @@ a {
     justify-content: center;
     align-items: center;
     transition: 1s;
+    z-index: 998;
 }
 
 /*모달 숨김 상태*/
@@ -42,6 +46,7 @@ a {
     text-align: center;
     background-color: #202540;
     position: relative;
+    z-index: 999;
 }
 
 /*.modal__contents select {*/
@@ -149,7 +154,8 @@ a {
 }
 
 #header .logo img {
-    height: 40px;
+    height: 60px;
+    margin-top: -9px;
 }
 
 #header .sub_title {
@@ -319,7 +325,7 @@ hr {
 }
 
 /*작성자*/
-.card_author {
+.card_delete {
     position: absolute;
     bottom: 14px;
     right: 20px;

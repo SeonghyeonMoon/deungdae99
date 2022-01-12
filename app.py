@@ -100,26 +100,9 @@ def category(val):
 # 글 삭제
 @app.route('/post_delete', methods=['POST'])
 def post_delete():
-    token_receive = request.cookies.get('mytoken')
-    user_id = request.form['Author']   # 포스트 글쓴이
-
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userinfo = db.users.find_one({'username': payload['id']}, {'_id': 0})
-
-        # 내글 인지 확인
-        if user_id == userinfo['username']:
-            category = request.form['category']
-            title = request.form['title']
-            # 글삭제
-            db.posting.delete_one({'Category': category}, {'Title': title}, {'ID': userinfo['username']})
-            return jsonify({'msg': '삭제 되었습니다.','result': 'success'})
-
-    except jwt.ExpiredSignatureError:
-        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+    ID = request.form['id_give']
+    db.posting.delete_one({'ID': int(ID)})
+    return jsonify({'result':'success','msg':'삭제 완료'})
 
 # 글 포스팅 하기
 @app.route('/post_write', methods=['POST'])
