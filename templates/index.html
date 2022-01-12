@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>등대99</title>
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+
+
+    <script>
+        <!--회원가입 기능-->
+        function sing_up() {
+            let username = $('#sing_ID').val()
+            let pw = $('#sing_PW').val()
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/save",
+                data: {username_give: username, password_give: pw},
+                success: function (response) {
+                    if (response['result'] === 'success') {
+                        alert("회원가입이 됐습니다.")
+                    }
+                }
+            })
+        }
+
+        <!--로그인 기능-->
+        function sing_in() {
+            let username = $("#input-username").val();
+            let password = $("#input-password").val();
+
+            if (username == "") {
+                $("#help-id-login").text("아이디를 입력해주세요.");
+                $("#input-username").focus();
+                return;
+            } else {
+                $("#help-id-login").text("");
+            }
+
+            if (password == "") {
+                $("#help-password-login").text("비밀번호를 입력해주세요.");
+                $("#input-password").focus();
+                return;
+            } else {
+                $("#help-password-login").text("");
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_in",
+                data: {
+                    username_give: username,
+                    password_give: password,
+                },
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        $.cookie("mytoken", response["token"], {path: "/"});
+                        window.location.replace("/");
+                    } else {
+                        alert(response["msg"]);
+                    }
+                },
+            });
+        }
+    </script>
+
+</head>
+<body>
+<!--전체 감싸주는 부분-->
+<div class="wrap">
+    <!--모달부분 시작(기본적으로 가려진 상태)-->
+    <div class="modal hidden">
+        <div class="modal__contents">
+            <!--모달 창 닫는 버튼-->
+            <button class="close btn" id="closeModal">X</button>
+            <!--첫번째 모달 (게시글 입력)-->
+            <div class="post hidden">
+                <!--모달 헤더-->
+                <h2>포스팅</h2>
+                <!--사용자가 포스팅 하기 위해 입력할 필드들-->
+                <div class="inputs">
+                    <!--새 게시글 카테고리-->
+                    <div class="post_category">
+                        <h4>카테고리</h4>
+                        <select id="categorys">
+                            <option selected>카테고리</option>
+                            <option value="algorithm">알고리즘/자료구조</option>
+                            <option value="front">프론트엔드</option>
+                            <option value="back">백엔드</option>
+                            <option value="hanghae">항해 정보</option>
+                            <option value="other">기타 정보</option>
+                        </select>
+                    </div>
+                    <!--새 게시글 제목-->
+                    <div class="post_title">
+                        <h4>제목</h4>
+                        <input
+                                type="text"
+                                name="title"
+                                class="title"
+                                placeholder="제목을 입력하세요"
+                        />
+                    </div>
+                    <!--새 게시글 주소-->
+                    <div class="post_URL">
+                        <h4>주소</h4>
+                        <input
+                                type="text"
+                                name="URL"
+                                class="URL"
+                                placeholder="주소을 입력하세요"
+                        />
+                    </div>
+                    <!--새 게시글 설명-->
+                    <div class="post_description">
+                        <h4>설명</h4>
+                        <input
+                                type="text"
+                                name="description"
+                                class="description"
+                                placeholder="설명을 입력하세요"
+                        />
+                    </div>
+                    <!--새 게시글 포스팅하기 버튼-->
+                    <button>포스팅하기</button>
+                </div>
+            </div>
+            <!--첫번째 모달 끝-->
+            <!--두번째 모달 (로그인)-->
+            <div class="login">
+                <!--모달 헤더-->
+                <h2>로그인</h2>
+                <!--로그인 입력 필드-->
+                <div class="inputs">
+                    <!--아이디 입력 필드-->
+                    <div class="login_id">
+                        <h4>아이디</h4>
+                        <input
+                                type="text"
+                                id="input-username"
+                                name="ID"
+                                class="ID"
+                                placeholder="아이디를 입력하세요"
+                        />
+                    </div>
+                    <!--비밀번호(비번, 패스워드) 입력 필드-->
+                    <div class="login_password">
+                        <h4>비밀번호</h4>
+                        <input
+                                type="password"
+                                id="input-password"
+                                name="password"
+                                class="PW"
+                                placeholder="비밀번호를 입력하세요"
+                        />
+                    </div>
+                </div>
+                <!--로그인 버튼-->
+                <button onclick="sing_in()">로그인</button>
+                <!--회원가입 모달 불러오기 버튼-->
+                <button id="toggleResister">회원가입</button>
+            </div>
+            <!--두번째 모달 끝-->
+            <!--세번째 모달 (회원가입)-->
+            <div class="register hidden">
+                <!--헤더-->
+                <h2>회원가입</h2>
+                <!--아이디 입력 필드-->
+                <div class="register_id">
+                    <h4>아이디</h4>
+                    <input
+                            type="text"
+                            id="sing_ID"
+                            name="ID"
+                            class="ID"
+                            placeholder="아이디를 입력하세요"
+                    />
+                </div>
+                <!--비밀번호(비번, 패스워드) 입력 필드-->
+                <div class="login_password">
+                    <h4>비밀번호</h4>
+                    <input
+                            type="password"
+                            id="sing_PW"
+                            name="password"
+                            class="PW"
+                            placeholder="비밀번호를 입력하세요"
+                    />
+                </div>
+                <!--회원가입 버튼-->
+                <button onclick="sing_up()">회원가입</button>
+                <!--로그인모달 불러오기 버튼-->
+                <button id="toggleLogin">로그인하러 가기</button>
+            </div>
+        </div>
+    </div>
+    <!--모달부분 끝-->
+    <!--헤더부분 시작-->
+    <header id="header">
+        <!--햄버거 메뉴 버튼-->
+        <button class="hamburger">
+            <i class="menuIcon material-icons">menu</i>
+        </button>
+        <!--항해99 로고-->
+        <h1 class="logo">
+            <a href="/"><img src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg" alt="logo"/></a>
+        </h1>
+        <!--로그인 버튼-->
+        <button class="login" id="openModal">로그인</button>
+    </header>
+    <!--헤더부분 끝-->
+    <!--메인부분 시작-->
+    <main id="main">
+        <!--사이드바 메뉴-->
+        <aside id="sidebar">
+            <ul>
+                <li class="active"><a href="/">
+                    <div class="menu">전체 보기</div>
+                </a></li>
+                <li><a href={{url_for('category', val='algorithm' )}}>
+                    <div class="menu">알고리즘<br>/ 자료구조</div>
+                </a></li>
+                <li><a href={{url_for('category', val='front' )}}>
+                    <div class="menu">프론트엔드</div>
+                </a></li>
+                <li><a href={{url_for('category', val='back' )}}>
+                    <div class="menu">백엔드</div>
+                </a></li>
+                <li><a href={{url_for('category', val='hanghae' )}}>
+                    <div class="menu">항해 소식</div>
+                </a></li>
+                <li><a href={{url_for('category', val='other' )}}>
+                    <div class="menu">기타 정보</div>
+                </a></li>
+            </ul>
+        </aside>
+        <!-- 여기 내부에 card들 들어올 예정 -->
+        <section id="contents">
+            {% for post in posting %}
+            <div class="card">
+                <h4>{{post['Title']}}</h4>
+                <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                <p class="description">{{post['Content']['comment']}}</p>
+            </div>
+            {% endfor %}
+            <!--포스팅 추가 버튼-->
+            <button id="postModal">포스팅하기</button>
+        </section>
+    </main>
+</div>
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+<script>
+    // 사이드바
+    let isSidebar = true
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        if (isSidebar) {
+            document.querySelector('#sidebar').classList.add('hidden')
+            document.querySelector('#contents').style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr';
+            document.querySelector('#contents').style.marginLeft = '-250px';
+            isSidebar = false
+        } else {
+            document.querySelector('#sidebar').classList.remove('hidden')
+            document.querySelector('#contents').style.gridTemplateColumns = '1fr 1fr 1fr 1fr';
+            document.querySelector('#contents').style.marginLeft = '0px';
+            isSidebar = true
+        }
+    })
+
+    // 게시글 분류
+    document.querySelectorAll('#sidebar > ul > li').forEach((list) => {
+        list.addEventListener('click', (e) => {
+            document.querySelectorAll('#sidebar > ul > li').forEach((list) => {
+                list.classList.remove('active')
+            })
+            e.target.classList.add('active')
+            // 포스트 초기화 후 API 호출해서 카테고리별 포스트 가져와서 넣기
+        })
+    })
+
+
+    // 모달창
+    const modal = document.querySelector(".modal");
+    const modalContents = document.querySelector(".modal__contents");
+    document.querySelector("#openModal").addEventListener("click", () => {
+        modal.classList.remove("hidden");
+        modalContents.classList.add("appear");
+    });
+    document.querySelector("#closeModal").addEventListener("click", () => {
+        modal.classList.add("hidden");
+        modalContents.classList.remove("appear");
+        document.querySelector('.register').classList.add('hidden')
+        document.querySelector('.login').classList.remove('hidden')
+        document.querySelector('.post').classList.add('hidden')
+
+    });
+
+    // 로그인 회원가입 창 토글
+    document.querySelector('#toggleResister').addEventListener("click", () => {
+        document.querySelector('.register').classList.remove('hidden')
+        document.querySelector('.login').classList.add('hidden')
+    })
+    document.querySelector('#toggleLogin').addEventListener("click", () => {
+        document.querySelector('.register').classList.add('hidden')
+        document.querySelector('.login').classList.remove('hidden')
+    })
+
+    // 포스팅 박스
+    document.querySelector('#postModal').addEventListener('click', () => {
+        modal.classList.remove("hidden");
+        document.querySelector('.post').classList.remove('hidden')
+        document.querySelector('.login').classList.add('hidden')
+    })
+
+    // 포스팅 쓰기
+    document.querySelector('.post button').addEventListener('click', () => {
+        let c = document.getElementById("categorys");
+        let category = c.options[c.selectedIndex].value;
+        let title = document.querySelector('.post_title input')
+        let url = document.querySelector('.post_URL input')
+        let description = document.querySelector('.post_description input')
+        console.log(category, title.value, url.value, description.value)
+        $.ajax({
+            type: "POST",
+            url: "/post_write",
+            data: {category_give: category, title_give: title.value, url_give: url.value, desc_give: description.value},
+            success: function (response) {
+                if (response['result'] === 'success') {
+                    // window.location.reload()
+                    alert('성공')
+                } else if (response['result'] === 'fail') {
+                    alert(response['msg'])
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

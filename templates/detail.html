@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- JQuery -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!--    스타일 시트로 따로 뺄 경우
+    @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);-->
+
+    <style>
+      /*전체 폰트*/
+      * {
+        font-family: "Spoqa Han Sans Neo", "sans-serif";
+      }
+
+      /*상단 파란색 헤더*/
+      .header {
+        height: 60px;
+        background-color: #202540;
+        color: white;
+      }
+
+      /*헤더 왼쪽 부분 (햄버거 아이콘 들어가는 곳)*/
+      .left {
+        float: left;
+        text-align: left;
+        padding-top: 10px;
+        padding-left: 20px;
+      }
+
+      /*헤더 오른쪽 부분 (로그인 들어가는 곳)*/
+      .right {
+        float: right;
+        text-align: right;
+        padding-top: 17px;
+        padding-right: 30px;
+      }
+
+      /*햄버거 아이콘*/
+      .icon {
+        width: 35px;
+        height: 5px;
+        background-color: white;
+        margin: 6px 0;
+      }
+
+      /*body 설정 기본은 가운데 정렬*/
+      body {
+        text-align: center;
+      }
+
+      /*본문*/
+      .wrap {
+        margin: 0 auto;
+      }
+
+      /*제목 감싸는 부분*/
+      .title {
+        width: 80%;
+        margin: auto;
+        padding-left: 30px;
+      }
+
+      /*제목*/
+      h1 {
+        text-align: left;
+      }
+
+      /*썸네일 들어갈 부분*/
+      .img {
+        width: 80%;
+        height: 300px;
+        background-color: lightcoral;
+        backgound-position: center;
+        background-size: cover;
+        margin: auto;
+        border-radius: 10px;
+      }
+
+      /*포스팅 링크*/
+      .post-link {
+        margin: auto;
+        width: 80%;
+        text-align: left;
+      }
+
+      /*좋아요 버튼*/
+      .like {
+        margin-top: 30px;
+        width: 10%;
+        height: 30px;
+        background-color: #f50000;
+        color: white;
+        border-radius: 10px;
+        border-width: 0px;
+        font-weight: bold;
+      }
+
+      /*댓글 입력 칸*/
+      .comment {
+        margin-top: 20px;
+        width: 80%;
+        height: 80px;
+        padding: 5px;
+        overflow: hidden;
+        resize: none;
+        line-height: 15px;
+        border-radius: 10px;
+      }
+
+      /*댓글 작성 버튼*/
+      .comment_input {
+        margin: auto;
+        width: 15%;
+        height: 30px;
+        background-color: #202540;
+        color: white;
+        border-radius: 10px;
+        border-width: 0px;
+        font-weight: bold;
+      }
+
+      /*작성한 댓글들 보여줄 곳*/
+      .table {
+        width: 80%;
+        margin: 50px auto;
+        text-align: center;
+      }
+    </style>
+
+    <script>
+      // 좋아요 버튼 확인용
+      function like(id) {
+        console.log(id)
+        $.ajax({
+          type: "POST",
+          url: "/like",
+          data: {id_give:id},
+          success: function (response) {
+            if (response["result"] === "success") {
+              window.location.replace("");
+            } else {
+              alert(response["msg"]);
+            }
+          },
+        })
+      }
+
+      // 댓글작성 버튼 확인용
+      function comment_input() {
+        alert("댓글작성");
+      }
+    </script>
+  </head>
+
+  <body>
+    <!--헤더-->
+    <div id="header" class="header">
+      <!--    헤더 왼쪽 부분 (햄버거 아이콘 들어가는 곳)-->
+      <div class="left">
+        <!--        햄버거 아이콘-->
+        <div class="icon"></div>
+        <div class="icon"></div>
+        <div class="icon"></div>
+      </div>
+      <!--    헤더 오른쪽 부분 (로그인)-->
+      <div class="right">로그인</div>
+    </div>
+
+    <!--본문-->
+    <div class="wrap">
+      <!--    포스팅 제목-->
+      <div class="title">
+        <h1>{{post['Title']}}</h1>
+      </div>
+      <main>
+        <!--        썸네일 들어갈 곳-->
+        <div class="img"><img class="img" src="{{post['Content']['img']}}"></div>
+        <!--        포스팅 링크 들어갈 곳 -->
+        <div class="post-link">
+          <h4><a href={{post['Content']['url']}} target="_blank">{{post['Content']['url']}}</a></h4>
+        </div>
+        <!--        좋아요 버튼-->
+        <p>
+          <button onclick="like({{post['ID']}})" class="like">추천 {{post['like']}}</button>
+        </p>
+        <!--        댓글 입력창-->
+        <p><textarea class="comment">여기에 글</textarea></p>
+        <!--        댓글 작성 버튼-->
+        <button
+          onclick="comment_input()"
+          id="comment-text"
+          class="comment_input"
+        >
+          댓글 작성
+        </button>
+      </main>
+      <footer>
+        <!--        입력한 댓글 보여지는 곳-->
+        <table class="table">
+          <!--            테이블 크기 조절-->
+          <colgroup>
+            <col span="1" style="width: 20%" />
+            <col span="1" style="width: 55%" />
+            <col span="1" style="width: 25%" />
+          </colgroup>
+          <!--            상단(1행)-->
+          <thead>
+            <tr>
+              <th scope="col">이름</th>
+              <th scope="col">내용</th>
+              <th scope="col">작성시간</th>
+            </tr>
+          </thead>
+          <!--            달았던 코멘트 불러와서 띄워주는 곳-->
+          <tbody id="comment-table">
+            <tr>
+              <td>11조</td>
+              <td>
+                아무내용이나입력해보겠습니다길이가길면어떻게들어가는지 보게 조금
+                더 길게 써보겠습니다
+              </td>
+              <td>작성시간1</td>
+            </tr>
+            <tr>
+              <td>두번째</td>
+              <td>
+                아무내용이나입력해보겠습니다길이가길면어떻게들어가는지 보게 조금
+                더 길게 써보겠습니다
+              </td>
+              <td>작성시간2</td>
+            </tr>
+          </tbody>
+        </table>
+      </footer>
+    </div>
+  </body>
+</html>
