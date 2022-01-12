@@ -219,32 +219,32 @@ def update_like():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.users.find_one({"username": payload['id']}, {"_id": False})
+        # 기존 like 수 가져오기
+        old_like = db.posting.find_one({'ID': int(ID)}, {'_id': False})
+        # print(f'올드 like : {old_like["like"]}')
 
-        old_like = db.posting.find_one({'ID':int(ID)},{'_id':False})
-        print(f'올드 like : {old_like["like"]}')
-
+        # 포스트의 추천버튼 최소 클릭시 실행
         if old_like['like'] == 0:
             doc = {
-                'ID': ID, # 포스트 아이디
-                'user': [] # 추천 누른사람
+                'ID': ID,  # 포스트 아이디
+                'user': []  # 추천 누른사람
             }
             db.like.insert_one(doc)
 
         # 누른사람 걸러내기
-        like_list = db.like.find_one({'ID':ID}, {'_id':False})
-        print(like_list['user'])
+        like_list = db.like.find_one({'ID': ID}, {'_id': False})
+        # print(f"누른사람 : {like_list['user']}")
         for i in like_list['user']:
-            if i['user'] == userinfo['username']:
-                return jsonify({'result':'feill'}, {'msg':'이미 눌렀습니다.'})
+            if i == userinfo['username']:
+                return jsonify({'result': 'fail','msg': '이미 눌렀습니다.'})
 
-        # 누른사람 추가하기 오류
-        print(userinfo['username'])
-        like_list['user'].append(userinfo['username'])
-        db.like.updata({'ID':ID},{'$push':{'user':userinfo['username']}})
+        # 누른사람 추가하기
+        print(f"추가할 사람 : {userinfo['username']}")
+        db.like.update_one({'ID': ID}, {'$push': {'user': userinfo['username']}})
 
-        #추천 +1
+        # 추천 +1
         new_like = int(old_like['like']) + 1
-        db.posting.update_one({'ID':int(ID)},{'$set':{'like':new_like}})
+        db.posting.update_one({'ID': int(ID)}, {'$set': {'like': new_like}})
 
         return jsonify({"result": "success", 'msg': '좋아요!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
