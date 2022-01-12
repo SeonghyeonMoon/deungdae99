@@ -46,6 +46,7 @@ def sign_up():
     doc = {
         "username": username_receive,                               # 아이디
         "password": password_hash,                                  # 비밀번호
+        "name":"",                                                  # 이름
         "profile_name": username_receive,                           # 프로필 이름 기본값은 아이디
         "profile_pic": "",                                          # 프로필 사진 파일 이름
         "profile_pic_real": "profile_pics/profile_placeholder.png", # 프로필 사진 기본 이미지
@@ -128,12 +129,22 @@ def post_write():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.users.find_one({"username": payload["id"]})
 
+        title_receive = request.form['title_give']
+        Category = request.form['category_give']
+        author = userinfo['username']
+        date = datetime.today().strftime("%Y-%m-%d %H:%M")
+
         # bs4에 사용하고 저장할 url
         url = request.form['url_give']
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
         data = requests.get(url, headers=headers)
         soup = BeautifulSoup(data.text, 'html.parser')
+        try:
+            img = soup.select_one('meta[property="og:image"]')['content']
+        except:
+            img =""
+
 
         # 게시글 id 자동증가
         num = db.postid.find_one({},{'_id':False})
@@ -146,14 +157,8 @@ def post_write():
             db.postid.update_one({'ID':num['ID']},{'$set':{'ID':ID}})
 
 
-        title_receive = request.form['title_give']
-        Category = request.form['category_give']
-        author = userinfo['username']
-        date = datetime.today().strftime("%Y-%m-%d %H:%M")
-
         # url은 상단에 있음
         comment = request.form['desc_give']
-        img = soup.select_one('meta[property="og:image"]')['content']
         content = {'img':img, 'url':url,'comment':comment}
 
         doc = {
@@ -199,6 +204,7 @@ def write_post():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+
 # 마이페이지
 @app.route('/mypage')
 def mypage():
@@ -238,7 +244,7 @@ def update_like():
         userinfo = db.users.find_one({"username": payload['id']}, {"_id": False})
 
         # 로그인 안한 사람
-        if ID == '0':
+        if userinfo is None:
             return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
         # 기존 like 수 가져오기

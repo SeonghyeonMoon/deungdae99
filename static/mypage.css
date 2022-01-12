@@ -230,7 +230,11 @@ a:visited {
 
 a:hover {
     color: #020101;
-    text-decoration: underline;
+    text-decoration: none;
+}
+/*마이페이지 가기*/
+#header > div > h2 > a {
+    color: white;
 }
 
 /*카드*/

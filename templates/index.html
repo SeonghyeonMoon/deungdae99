@@ -11,8 +11,6 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="stylesheet" href="../static/style.css">
-
-
     <script>
         // 회원 가입
         function sing_up() {
@@ -29,12 +27,10 @@
                 }
             })
         }
-
         // 로그인 기능
         function sing_in() {
             let username = $("#input-username").val();
             let password = $("#input-password").val();
-
             if (username == "") {
                 $("#help-id-login").text("아이디를 입력해주세요.");
                 $("#input-username").focus();
@@ -42,7 +38,6 @@
             } else {
                 $("#help-id-login").text("");
             }
-
             if (password == "") {
                 $("#help-password-login").text("비밀번호를 입력해주세요.");
                 $("#input-password").focus();
@@ -68,7 +63,6 @@
             });
         }
     </script>
-
 </head>
 <body>
 <!--전체 감싸주는 부분-->
@@ -202,14 +196,16 @@
     <!--모달부분 끝-->
     <!--헤더부분 시작-->
     <header id="header">
-        <!--햄버거 메뉴 버튼-->
-        <button class="hamburger">
-            <i class="menuIcon material-icons">menu</i>
-        </button>
-        <!--항해99 로고-->
-        <h1 class="logo">
-            <a href="/"><img src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg" alt="logo"/></a>
-        </h1>
+        <div class="left">
+            <!--햄버거 메뉴 버튼-->
+            <button class="hamburger">
+                <i class="menuIcon material-icons">menu</i>
+            </button>
+            <!--항해99 로고-->
+            <h1 class="logo">
+                <a href="/"><img src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg" alt="logo"/></a>
+            </h1>
+        </div>
         <!--로그인 버튼-->
         <button class="login" id="openModal">로그인</button>
         <!-- 로그인 했을 때 보여지는 파트 -->
@@ -225,24 +221,37 @@
         <!--사이드바 메뉴-->
         <aside id="sidebar">
             <ul>
-                <li class="active"><a href="/">
-                    <div class="menu">전체 보기</div>
-                </a></li>
-                <li name=""><a href={{url_for('category', val='algorithm' )}}>
-                    <div class="menu">알고리즘<br>/ 자료구조</div>
-                </a></li>
-                <li><a href={{url_for('category', val='front' )}}>
-                    <div class="menu">프론트엔드</div>
-                </a></li>
-                <li><a href={{url_for('category', val='back' )}}>
-                    <div class="menu">백엔드</div>
-                </a></li>
-                <li><a href={{url_for('category', val='hanghae' )}}>
-                    <div class="menu">항해 소식</div>
-                </a></li>
-                <li><a href={{url_for('category', val='other' )}}>
-                    <div class="menu">기타 정보</div>
-                </a></li>
+                <div class="menu_padding"></div>
+                <div class="menu">
+                    <li class="active"><a href="/">
+                        <div class="menu_align">전체 보기</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='algorithm' )}}>
+                        <div class="menu_align">알고리즘/자료구조</span></div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='front' )}}>
+                        <div class="menu_align">프론트엔드</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='back' )}}>
+                        <div class="menu_align">백엔드</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='hanghae' )}}>
+                        <div class="menu_align">항해 소식</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='other' )}}>
+                        <div class="menu_align">기타 정보</div>
+                    </a></li>
+                </div>
             </ul>
         </aside>
         <!-- 여기 내부에 card들 들어올 예정 -->
@@ -266,7 +275,6 @@
         </section>
     </main>
 </div>
-
 <!-- JQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
@@ -286,7 +294,6 @@
             isSidebar = true
         }
     })
-
     // 게시글 분류
     document.querySelectorAll('#sidebar > ul > li').forEach((list) => {
         list.addEventListener('click', (e) => {
@@ -297,8 +304,6 @@
             // 포스트 초기화 후 API 호출해서 카테고리별 포스트 가져와서 넣기
         })
     })
-
-
     // 모달창
     const modal = document.querySelector(".modal");
     const modalContents = document.querySelector(".modal__contents");
@@ -312,9 +317,7 @@
         document.querySelector('.register').classList.add('hidden')
         document.querySelector('.login').classList.remove('hidden')
         document.querySelector('.post').classList.add('hidden')
-
     });
-
     // 로그인 회원가입 창 토글
     document.querySelector('#toggleResister').addEventListener("click", () => {
         document.querySelector('.register').classList.remove('hidden')
@@ -324,14 +327,12 @@
         document.querySelector('.register').classList.add('hidden')
         document.querySelector('.login').classList.remove('hidden')
     })
-
     // 포스팅 박스
     document.querySelector('#postModal').addEventListener('click', () => {
         modal.classList.remove("hidden");
         document.querySelector('.post').classList.remove('hidden')
         document.querySelector('.login').classList.add('hidden')
     })
-
     // 포스팅 쓰기
     document.querySelector('.post button').addEventListener('click', () => {
         let c = document.getElementById("categorys");
@@ -354,7 +355,6 @@
             }
         })
     })
-
     // 로그인 상태인지 확인
     function parseJwt (token) {
         let base64Url = token.split('.')[1];
@@ -370,13 +370,21 @@
         document.querySelector('.login_box').classList.remove('hidden')
         document.querySelector('.login_box .show_id').innerHTML = id + '님 반가워요'
     }
-
     // 로그아웃
     document.querySelector('#logout').addEventListener('click', () => {
         console.log(1)
         document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         location.reload()
     })
+    let category = "{{category}}"
+    let idx = ['algorithm', 'front', 'back', 'hanghae', 'other'].indexOf(category)
+    document.querySelectorAll('.menu li').forEach((li, index) => {
+      li.classList.remove('active')
+      if (index === idx+1) {
+        li.classList.add('active')
+      }
+    })
+    console.log(category)
 </script>
 </body>
 </html>

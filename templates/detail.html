@@ -2,7 +2,7 @@
 <html lang="kr">
   <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>상세페이지</title>
     <link
       href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
       rel="stylesheet"
@@ -11,39 +11,50 @@
     <!-- JQuery -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
     <!--    스타일 시트로 따로 뺄 경우
     @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);-->
-
     <style>
       /*전체 폰트*/
       * {
         font-family: "Spoqa Han Sans Neo", "sans-serif";
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-
       /*상단 파란색 헤더*/
       .header {
-        height: 60px;
+        height: 80px;
         background-color: #202540;
         color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-
-      /*헤더 왼쪽 부분 (햄버거 아이콘 들어가는 곳)*/
-      .left {
-        float: left;
-        text-align: left;
-        padding-top: 10px;
-        padding-left: 20px;
+      /* 로고 */
+      .logo {
+        margin-left: 30px;
       }
-
-      /*헤더 오른쪽 부분 (로그인 들어가는 곳)*/
-      .right {
-        float: right;
-        text-align: right;
-        padding-top: 17px;
-        padding-right: 30px;
+      .logo a img {
+        height: 40px;
       }
-
+      .login {
+        all: unset;
+        margin-right: 30px;
+      }
+      .show_id {
+        all: unset;
+        margin-right: 30px;
+      }
+      #logout {
+        all: unset;
+        margin-right: 30px;
+        cursor: pointer;
+      }
+      .login_box a {
+        all: unset;
+        margin-right: 30px;
+        cursor: pointer;
+      }
       /*햄버거 아이콘*/
       .icon {
         width: 35px;
@@ -51,47 +62,43 @@
         background-color: white;
         margin: 6px 0;
       }
-
       /*body 설정 기본은 가운데 정렬*/
       body {
         text-align: center;
       }
-
       /*본문*/
       .wrap {
         margin: 0 auto;
       }
-
       /*제목 감싸는 부분*/
       .title {
         width: 80%;
         margin: auto;
         padding-left: 30px;
       }
-
       /*제목*/
       h1 {
         text-align: left;
       }
-
       /*썸네일 들어갈 부분*/
       .img {
         width: 80%;
-        height: 300px;
+        height: 50vh;
         background-color: lightcoral;
-        backgound-position: center;
+        background-repeat:no-repeat;
+        background-position: center;
         background-size: cover;
         margin: auto;
         border-radius: 10px;
+        background-image: url("{{post['Content']['img']}}");
+        border: 2px solid black;
       }
-
       /*포스팅 링크*/
       .post-link {
         margin: auto;
         width: 80%;
         text-align: left;
       }
-
       /*좋아요 버튼*/
       .like {
         margin-top: 30px;
@@ -102,8 +109,8 @@
         border-radius: 10px;
         border-width: 0px;
         font-weight: bold;
+        cursor: pointer;
       }
-
       /*댓글 입력 칸*/
       .comment {
         margin-top: 20px;
@@ -115,7 +122,6 @@
         line-height: 15px;
         border-radius: 10px;
       }
-
       /*댓글 작성 버튼*/
       .comment_input {
         margin: auto;
@@ -127,15 +133,16 @@
         border-width: 0px;
         font-weight: bold;
       }
-
       /*작성한 댓글들 보여줄 곳*/
       .table {
         width: 80%;
         margin: 50px auto;
         text-align: center;
       }
+      .hidden {
+        display: none;
+      }
     </style>
-
     <script>
       // 좋아요 버튼 확인용
       function like(id) {
@@ -153,28 +160,28 @@
           },
         })
       }
-
       // 댓글작성 버튼 확인용
       function comment_input() {
         alert("댓글작성");
       }
     </script>
   </head>
-
   <body>
     <!--헤더-->
     <div id="header" class="header">
       <!--    헤더 왼쪽 부분 (햄버거 아이콘 들어가는 곳)-->
-      <div class="left">
-        <!--        햄버거 아이콘-->
-        <div class="icon"></div>
-        <div class="icon"></div>
-        <div class="icon"></div>
+        <h1 class="logo">
+          <a href="/"><img src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg" alt="logo"/></a>
+      </h1>
+      <!--로그인 버튼-->
+      <button class="login" id="openModal">로그인</button>
+      <!-- 로그인 했을 때 보여지는 파트 -->
+      <div class="login_box hidden">
+          <div class="show_id"></div>
+          <button id="logout">로그아웃</button>
+          <a href={{url_for('mypage')}}>마이페이지</a>
       </div>
-      <!--    헤더 오른쪽 부분 (로그인)-->
-      <div class="right">로그인</div>
     </div>
-
     <!--본문-->
     <div class="wrap">
       <!--    포스팅 제목-->
@@ -183,7 +190,7 @@
       </div>
       <main>
         <!--        썸네일 들어갈 곳-->
-        <div class="img"><img class="img" src="{{post['Content']['img']}}"></div>
+        <div class="img"></div>
         <!--        포스팅 링크 들어갈 곳 -->
         <div class="post-link">
           <h4><a href={{post['Content']['url']}} target="_blank">{{post['Content']['url']}}</a></h4>
@@ -192,55 +199,24 @@
         <p>
           <button onclick="like({{post['ID']}})" class="like">추천 {{post['like']}}</button>
         </p>
-        <!--        댓글 입력창-->
-        <p><textarea class="comment">여기에 글</textarea></p>
-        <!--        댓글 작성 버튼-->
-        <button
-          onclick="comment_input()"
-          id="comment-text"
-          class="comment_input"
-        >
-          댓글 작성
-        </button>
       </main>
-      <footer>
-        <!--        입력한 댓글 보여지는 곳-->
-        <table class="table">
-          <!--            테이블 크기 조절-->
-          <colgroup>
-            <col span="1" style="width: 20%" />
-            <col span="1" style="width: 55%" />
-            <col span="1" style="width: 25%" />
-          </colgroup>
-          <!--            상단(1행)-->
-          <thead>
-            <tr>
-              <th scope="col">이름</th>
-              <th scope="col">내용</th>
-              <th scope="col">작성시간</th>
-            </tr>
-          </thead>
-          <!--            달았던 코멘트 불러와서 띄워주는 곳-->
-          <tbody id="comment-table">
-            <tr>
-              <td>11조</td>
-              <td>
-                아무내용이나입력해보겠습니다길이가길면어떻게들어가는지 보게 조금
-                더 길게 써보겠습니다
-              </td>
-              <td>작성시간1</td>
-            </tr>
-            <tr>
-              <td>두번째</td>
-              <td>
-                아무내용이나입력해보겠습니다길이가길면어떻게들어가는지 보게 조금
-                더 길게 써보겠습니다
-              </td>
-              <td>작성시간2</td>
-            </tr>
-          </tbody>
-        </table>
-      </footer>
     </div>
+    <script>
+      // 로그인 상태인지 확인
+    function parseJwt (token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+        return JSON.parse(jsonPayload);
+    }
+    if (document.cookie) {
+        let id = parseJwt(document.cookie)['id']
+        document.querySelector('#openModal').classList.add('hidden')
+        document.querySelector('.login_box').classList.remove('hidden')
+        document.querySelector('.login_box .show_id').innerHTML = id + '님 반가워요'
+    }
+    </script>
   </body>
 </html>

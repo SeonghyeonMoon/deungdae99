@@ -4,19 +4,17 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 /*메인 메뉴 (알고리즘, 프론트엔드, 백엔드, 항해 공지*/
 li {
     list-style: none;
 }
-
 /*전체 감싸주는 부분*/
 .wrap {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    min-width: 1300px;
 }
-
 /*모달 전체 적용*/
 .modal {
     position: fixed;
@@ -30,48 +28,38 @@ li {
     justify-content: center;
     align-items: center;
     transition: 1s;
+    z-index: 9999;
 }
-
 /*모달 숨김 상태*/
 .hidden {
     display: none;
 }
-
 /*모달 창에만 적용*/
 .modal__contents {
     width: 100%;
     max-width: 500px;
     height: auto;
     border-radius: 10px;
-    background-color: #fff;
     box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
-
     text-align: center;
     background-color: #202540;
     position: relative;
 }
-
-
 /*.modal__contents select {*/
 /*    color: #000;*/
 /*}*/
-
 /*.modal__contents input {*/
 /*    color: #000;*/
 /*}*/
-
-
 .appear {
     animation: appear 0.3s;
 }
-
 @keyframes appear {
     from {
         transform: translateY(100px);
         opacity: 0;
     }
 }
-
 /*모달 헤더*/
 .modal__contents h2 {
     margin-top: 30px;
@@ -80,10 +68,9 @@ li {
     font-weight: bold;
     color: #f50000;
 }
-
 /*모달 인풋*/
 .modal__contents input {
-    width: 400px;
+    width: 380px;
     height: 40px;
     margin-bottom: 30px;
     border-radius: 20px;
@@ -93,23 +80,20 @@ li {
     outline: none;
     caret-color: #ccc;
 }
-
 .modal__contents input:focus {
     border: 2px solid #f50000;
 }
-
 .modal__contents h4 {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 15px;
     color: #fff;
     text-align: left;
-    margin-left: 50px;
+    margin-left: 70px;
 }
-
 .modal__contents button {
-    width: 400px;
-    height: 40px;
+    width: 200px;
+    height: 50px;
     border-radius: 20px;
     background-color: #f50000;
     margin-bottom: 30px;
@@ -118,30 +102,64 @@ li {
     font-size: 18px;
     transition: 0.3s;
 }
-
 .modal__contents button:hover {
     background-color: rgba(245, 0, 0, 0.5);
 }
-
 .modal__contents .log-in-btn {
     margin-bottom: 20px;
 }
-
 .modal__contents .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 25px;
-    height: 25px;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    padding-top: 1px;
     border-radius: 50%;
 }
-
-.post_category {
-    color: black;
-    width: 400px;
-    border-radius: 10px;
+.category {
+    margin-top: -5px;
 }
-
+/*게시물 작성 모달창 - 카테고리 드롭다운*/
+.post_category {
+    display: block;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 5px 5px 5px 5px;
+    width: 380px;
+    box-sizing: border-box;
+    margin: auto;
+    border: none;
+    border-radius: 20px;
+    background-color: #fff;
+}
+.post_category:focus {
+    box-shadow: none;
+    border: none;
+}
+/*카테고리 선택 창*/
+.post_category select {
+    background: white;
+    border: none;
+    font-size: 14px;
+    height: 29px;
+    text-align: center;
+    width: 360px;
+    outline: none;
+}
+.post_title {
+    margin-top: 20px;
+}
+.post_URL, .post_description {
+    margin-top: -10px;
+}
+.inputs button {
+    margin-top: 12px;
+    font-weight: bold;
+}
+.modal_padding {
+    margin-top: 30px;
+}
 /* Header */
 #header {
     width: 100%;
@@ -151,25 +169,20 @@ li {
     align-items: center;
     color: white;
 }
-
 #header .hamburger {
     all: unset;
     background: none;
     margin: 0 30px;
 }
-
 #header .hamburger > i {
     font-size: 50px;
 }
-
 #header .logo {
     height: 40px;
 }
-
 #header .logo img {
     height: 40px;
 }
-
 #header .login {
     all: unset;
     height: 50px;
@@ -178,137 +191,109 @@ li {
     font-size: 20px;
     font-weight: bold;
 }
-#header .login.hidden {
-    display: none;
-}
-
-#header .login_box.hidden {
-    display: none;
-}
-#header .login_box {
-    margin-left: auto;
-    margin-right: 30px;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: none;
-    display: flex;
-}
-#header .login_box .show_id {
-    margin-right: 30px;
-}
-#header .login_box button {
-    all: unset;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-}
-#header .login_box a {
-    margin-left: 30px;
-    text-decoration: none;
-    color: #fff
-}
 #main {
     flex: 1;
     display: flex;
 }
-
 /* Sidebar */
 #sidebar {
-    width: 250px;
+    width: 280px;
+    min-width: 280px;
     background-color: #202540;
     display: flex;
     flex-direction: column;
     transition: .3s;
 }
-
+/*사이드바 메뉴 기본 숨김상태*/
 #sidebar.hidden {
     transform: translateX(-300px);
 }
-
+/*사이드바 폰트 (흰색, 왼쪽 여백주기)*/
 #sidebar ul {
-    margin-left: 50px;
+    margin-left: 40px;
     color: white;
 }
-
+/*메뉴 한칸씩 나눠주기*/
+.menu {
+    width: 100%;
+    height: 15vh;
+    min-height: 30px;
+    vertical-align: middle;
+    line-height: 12px;
+    overflow: hidden;
+}
+.menu_padding {
+    margin-top: 30px;
+}
+.menu_align {
+    transform: translateX(10%) translateY(250%);
+}
+/*하이라이트 불 들어올 부분*/
 #sidebar li {
-    padding: 20px;
-    margin-top: 80px;
+    /*padding: 20px;*/
+    height: 80px;
     font-size: 20px;
     font-weight: bold;
-    transition: .3s
+    transition: .3s;
 }
-
 #sidebar li a {
     color: white;
     text-decoration: none;
 }
-
 #sidebar li.active {
     background-color: #fff;
     color: #202540;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
-
 #sidebar li.active a {
-    color:#202540
+    color: #202540
 }
-
 #sidebar li:hover {
     background-color: rgba(255, 255, 255, 0.5);
     color: #202540;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
-
-.menu {
-    width: 180px;
-    height: 40px;
-    vertical-align: middle;
-    line-height: 12px;
-}
-
 #postModal {
     position: fixed;
-    bottom: 50px;
-    right: 50px;
-    width: 100px;
-    height: 50px;
-    background-color: #f50000;
-    border-radius: 5px;
+    bottom: 5%;
+    right: 5%;
+    width: 140px;
+    height: 60px;
+    background-color: #202540;
+    border-radius: 25px;
+    border-style: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
 }
-
+#postModal:hover {
+    background-color: #f50000;
+}
 #contents {
     transition: .3s;
     padding: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     column-gap: 20px;
     row-gap: 20px;
 }
-
-.card .thumbnail {
-    width: 100%;
-    height: 150px;
-    background-color: #aaa;
+@media screen and (max-width: 1800px) {
+    #contents{
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
 }
-
-a:link {
-    color: black;
-    text-decoration: none;
+@media screen and (max-width: 1500px) {
+    #contents{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 }
-
-a:visited {
-    color: #0c2d2d;
-    text-decoration: none;
+@media screen and (max-width: 1200px) {
+    #contents{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
-
-a:hover {
-    color: #020101;
-    text-decoration: underline;
-}
-
 /*카드*/
 .card {
     width: 250px;
@@ -318,19 +303,16 @@ a:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     position: relative;
 }
-
 /*마우스 커서 가져가면 그림자 확대*/
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
-
 /*카드 썸네일(그림, 사진)*/
 .card .thumbnail {
     width: 100%;
     height: 150px;
     background-color: #aaa;
 }
-
 /*카드 제목 부분*/
 .card_title {
     width: 95%;
@@ -339,16 +321,13 @@ a:hover {
     margin: auto;
     font-weight: bold;
 }
-
 /*설명 부분*/
 .description {
     width: 95%;
     margin: auto;
     font-size: 14px;
     display: block;
-
 }
-
 /*게시물 작성 시간*/
 .card_time {
     width: 95%;
@@ -358,7 +337,6 @@ a:hover {
     bottom: 45px;
     font-size: 12px;
 }
-
 /*구분선*/
 hr {
     height: 1px;
@@ -371,7 +349,6 @@ hr {
     bottom: 40px;
     left: 10px;
 }
-
 /*좋아요 수*/
 .card_like {
     position: absolute;
@@ -380,13 +357,29 @@ hr {
     font-size: 14px;
     display: inline;
 }
-
 /*작성자*/
 .card_author {
-position: absolute;
+    position: absolute;
     bottom: 14px;
     right: 20px;
     font-size: 14px;
     text-align: right;
+}
+/*a태그 밑줄, 색 변경*/
+a:link {
+    color: black;
+    text-decoration: none;
+}
 
+a:visited {
+    color: #0c2d2d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #020101;
+    text-decoration: none;
+}
+#header > div > a {
+    color: white;
 }
