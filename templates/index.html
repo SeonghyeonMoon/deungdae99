@@ -11,10 +11,9 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="stylesheet" href="../static/style.css">
-
-
+    
     <script>
-        <!--회원가입 기능-->
+        // 회원 가입
         function sing_up() {
             let username = $('#sing_ID').val()
             let pw = $('#sing_PW').val()
@@ -30,7 +29,7 @@
             })
         }
 
-        <!--로그인 기능-->
+        // 로그인 기능
         function sing_in() {
             let username = $("#input-username").val();
             let password = $("#input-password").val();
@@ -212,6 +211,12 @@
         </h1>
         <!--로그인 버튼-->
         <button class="login" id="openModal">로그인</button>
+        <!-- 로그인 했을 때 보여지는 파트 -->
+        <div class="login_box hidden">
+            <div class="show_id"></div>
+            <button id="logout">로그아웃</button>
+            <a href={{url_for('mypage')}}>마이페이지</a>
+        </div>
     </header>
     <!--헤더부분 끝-->
     <!--메인부분 시작-->
@@ -342,6 +347,29 @@
                 }
             }
         })
+    })
+
+    // 로그인 상태인지 확인
+    function parseJwt (token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+        return JSON.parse(jsonPayload);
+    }
+    if (document.cookie) {
+        let id = parseJwt(document.cookie)['id']
+        document.querySelector('#openModal').classList.add('hidden')
+        document.querySelector('.login_box').classList.remove('hidden')
+        document.querySelector('.login_box .show_id').innerHTML = id + '님 반가워요'
+    }
+
+    // 로그아웃
+    document.querySelector('#logout').addEventListener('click', () => {
+        console.log(1)
+        document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        location.reload()
     })
 </script>
 </body>
