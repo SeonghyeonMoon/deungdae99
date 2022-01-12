@@ -14,7 +14,7 @@
 
 
     <script>
-        <!--회원가입 기능-->
+        // 회원 가입
         function sing_up() {
             let username = $('#sing_ID').val()
             let pw = $('#sing_PW').val()
@@ -30,7 +30,7 @@
             })
         }
 
-        <!--로그인 기능-->
+        // 로그인 기능
         function sing_in() {
             let username = $("#input-username").val();
             let password = $("#input-password").val();
@@ -363,12 +363,14 @@
         let id = parseJwt(document.cookie)['id']
         document.querySelector('#openModal').classList.add('hidden')
         document.querySelector('.login_box').classList.remove('hidden')
-        document.querySelector('.login_box .show_id').innerHTML = id
+        document.querySelector('.login_box .show_id').innerHTML = id + '님 반가워요'
     }
 
     // 로그아웃
     document.querySelector('#logout').addEventListener('click', () => {
+        console.log(1)
         document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        location.reload()
     })
 </script>
 </body>
