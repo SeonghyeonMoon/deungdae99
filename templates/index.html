@@ -228,7 +228,7 @@
                 <li class="active"><a href="/">
                     <div class="menu">전체 보기</div>
                 </a></li>
-                <li><a href={{url_for('category', val='algorithm' )}}>
+                <li name=""><a href={{url_for('category', val='algorithm' )}}>
                     <div class="menu">알고리즘<br>/ 자료구조</div>
                 </a></li>
                 <li><a href={{url_for('category', val='front' )}}>
@@ -250,9 +250,14 @@
             {% for post in posting %}
             <a href={{url_for('post_view', ID=post['ID'])}}>
                 <div class="card">
-                    <h4>{{post['Title']}}</h4>
                     <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
                     <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
                 </div>
             </a>
             {% endfor %}
