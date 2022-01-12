@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,16 +79,18 @@
                 <!--사용자가 포스팅 하기 위해 입력할 필드들-->
                 <div class="inputs">
                     <!--새 게시글 카테고리-->
-                    <div class="post_category">
+                    <div class="category">
                         <h4>카테고리</h4>
-                        <select id="categorys">
-                            <option selected>카테고리</option>
-                            <option value="algorithm">알고리즘/자료구조</option>
-                            <option value="front">프론트엔드</option>
-                            <option value="back">백엔드</option>
-                            <option value="hanghae">항해 정보</option>
-                            <option value="other">기타 정보</option>
-                        </select>
+                        <div class="post_category">
+                            <select id="categorys">
+                                <option selected>카테고리</option>
+                                <option value="algorithm">알고리즘/자료구조</option>
+                                <option value="front">프론트엔드</option>
+                                <option value="back">백엔드</option>
+                                <option value="hanghae">항해 정보</option>
+                                <option value="other">기타 정보</option>
+                            </select>
+                        </div>
                     </div>
                     <!--새 게시글 제목-->
                     <div class="post_title">
@@ -270,6 +272,76 @@
                 </div>
             </a>
             {% endfor %}
+            {% for post in posting %}
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
+            {% endfor %}
+            {% for post in posting %}
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
+            {% endfor %}{% for post in posting %}
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
+            {% endfor %}
+            {% for post in posting %}
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
+            {% endfor %}
+            {% for post in posting %}
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
+            {% endfor %}
+
             <!--포스팅 추가 버튼-->
             <button id="postModal">포스팅하기</button>
         </section>
@@ -372,8 +444,9 @@
     }
     // 로그아웃
     document.querySelector('#logout').addEventListener('click', () => {
-        console.log(1)
         document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.querySelector('#openModal').classList.remove('hidden')
+        document.querySelector('.login_box').classList.add('hidden')
         location.reload()
     })
     let category = "{{category}}"
@@ -384,7 +457,6 @@
         li.classList.add('active')
       }
     })
-    console.log(category)
 </script>
 </body>
 </html>
