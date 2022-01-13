@@ -138,18 +138,22 @@
           }
         })
       }
-      function post_delete(id){
-        $.ajax({
-          type: "POST",
-          url: "/post_delete",
-          data: {id_give: id},
-          success: function (response) {
-            if (response['result'] === 'success') {
-              alert(response['msg'])
-              location.reload()
+      // 글삭제
+      function post_delete(id) {
+        let proceed = confirm('정말 삭제 하시겠습니까?')
+        if (proceed) {
+          $.ajax({
+            type: "POST",
+            url: "/post_delete",
+            data: {id_give: id},
+            success: function (response) {
+              if (response['result'] === 'success') {
+                alert(response['msg'])
+                location.reload()
+              }
             }
-          }
-        })
+          })
+        }
       }
     </script>
   </body>

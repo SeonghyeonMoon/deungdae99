@@ -402,10 +402,13 @@
       })
       // 로그아웃
       document.querySelector('#logout').addEventListener('click', () => {
-        document.cookie = `mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
-        document.querySelector('#openModal').classList.remove('hidden')
-        document.querySelector('.login_box').classList.add('hidden')
-        location.reload()
+          let proceed = confirm('정말 로그아웃 하시겠습니까?')
+          if (proceed) {
+              document.cookie = `mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
+              document.querySelector('#openModal').classList.remove('hidden')
+              document.querySelector('.login_box').classList.add('hidden')
+              location.reload()
+          }
       })
 
       // 회원 가입

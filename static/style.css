@@ -449,3 +449,12 @@ a:hover {
 .menu > a {
   color: white;
 }
+
+/*아이디 중복확인*/
+#sing_ID {
+  width: 50%;
+}
+#id-ckeck {
+  width: 123px;
+  height: 40px;
+}

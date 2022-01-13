@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://localhost', 27017)
 db = client.deunggae
 
 # 토큰 비밀 키
@@ -62,7 +62,10 @@ def check_dup():
     # ID 중복확인
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
-    return jsonify({'result': 'success', 'exists': exists})
+    if exists == False:
+        return jsonify({'result': 'success'})
+    elif exists == True:
+        return jsonify({'result': 'fail'})
 
 # 회원탈퇴
 @app.route('/sign_delete', methods=['POST'])

@@ -11,21 +11,31 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
         // 회원 가입
         function sing_up() {
+            alert('비밀번호가 일치하지 않습니다.')
             let username = $('#sing_ID').val()
             let pw = $('#sing_PW').val()
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/save",
-                data: {username_give: username, password_give: pw},
-                success: function (response) {
-                    if (response['result'] === 'success') {
-                        alert("회원가입이 됐습니다.")
+            let repw = $('$sing_rePW').val()
+
+            if (pw === repw) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sign_up/save",
+                    data: {username_give: username, password_give: pw},
+                    success: function (response) {
+                        if (response['result'] === 'success') {
+                            alert("회원가입이 됐습니다.")
+                            location.reload()
+                        }
                     }
-                }
-            })
+                })
+            } else {
+                alert('비밀번호가 일치하지 않습니다.')
+                return;
+            }
         }
         // 로그인 기능
         function sing_in() {
@@ -62,6 +72,7 @@
                 },
             });
         }
+
     </script>
 </head>
 <body>
@@ -176,6 +187,7 @@
                             class="ID"
                             placeholder="아이디를 입력하세요"
                     />
+                    <button id="id-ckeck">아이디 확인</button>
                 </div>
                 <!--비밀번호(비번, 패스워드) 입력 필드-->
                 <div class="login_password">
@@ -185,9 +197,19 @@
                             id="sing_PW"
                             name="password"
                             class="PW"
-                            placeholder="비밀번호를 입력하세요"
+                            placeholder="비밀번호를 재입력하세요"
                     />
                 </div>
+                <div>
+                        <h4>비밀번호 확인</h4>
+                        <input
+                                type="password"
+                                id="sing_rePW"
+                                name="password"
+                                class="PW"
+                                placeholder="비밀번호를 입력하세요"
+                        />
+                    </div>
                 <!--회원가입 버튼-->
                 <button onclick="sing_up()">회원가입</button>
                 <!--로그인모달 불러오기 버튼-->
@@ -267,7 +289,7 @@
                     <p class="description">{{post['Content']['comment']}}</p>
                     <div class="card_time">{{post['Date']}}</div>
                     <hr class="card_divide">
-                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true">  {{post['like']}}</i></div>
                     <div class="card_author">{{post['Author']}}</div>
                 </div>
             </a>
@@ -349,8 +371,8 @@
             data: {category_give: category, title_give: title.value, url_give: url.value, desc_give: description.value},
             success: function (response) {
                 if (response['result'] === 'success') {
-                    // window.location.reload()
                     alert('성공')
+                    location.reload()
                 } else if (response['result'] === 'fail') {
                     alert(response['msg'])
                 }
@@ -374,11 +396,15 @@
     }
     // 로그아웃
     document.querySelector('#logout').addEventListener('click', () => {
-        document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        document.querySelector('#openModal').classList.remove('hidden')
-        document.querySelector('.login_box').classList.add('hidden')
-        location.reload()
+        let proceed = confirm('정말 로그아웃 하시겠습니까?')
+        if (proceed) {
+            document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.querySelector('#openModal').classList.remove('hidden')
+            document.querySelector('.login_box').classList.add('hidden')
+            location.reload()
+        }
     })
+
     let category = "{{category}}"
     let idx = ['algorithm', 'front', 'back', 'hanghae', 'other'].indexOf(category)
     document.querySelectorAll('.menu li').forEach((li, index) => {
@@ -386,6 +412,22 @@
       if (index === idx+1) {
         li.classList.add('active')
       }
+    })
+    // 아이디 중복확인
+    document.querySelector('#id-ckeck').addEventListener('click', () => {
+        let ID = document.getElementById('sing_ID').value
+        $.ajax({
+            type: "POST",
+            url: "/sign_up/check_dup",
+            data: {username_give:ID},
+            success: function (response) {
+                if (response['result'] === 'success') {
+                    alert('사용할 수 있는 아이디입니다.')
+                }else{
+                    alert('사용할 수 없는 아이디입니다.')
+                }
+            }
+        })
     })
 </script>
 </body>
