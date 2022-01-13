@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -11,30 +11,36 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     <link rel="stylesheet" href="../static/style.css">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
-        <!--회원가입 기능-->
+        // 회원 가입
         function sing_up() {
+            alert('비밀번호가 일치하지 않습니다.')
             let username = $('#sing_ID').val()
             let pw = $('#sing_PW').val()
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/save",
-                data: {username_give: username, password_give: pw},
-                success: function (response) {
-                    if (response['result'] === 'success') {
-                        alert("회원가입이 됐습니다.")
-                    }
-                }
-            })
-        }
+            let repw = $('$sing_rePW').val()
 
-        <!--로그인 기능-->
+            if (pw === repw) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sign_up/save",
+                    data: {username_give: username, password_give: pw},
+                    success: function (response) {
+                        if (response['result'] === 'success') {
+                            alert("회원가입이 됐습니다.")
+                            location.reload()
+                        }
+                    }
+                })
+            } else {
+                alert('비밀번호가 일치하지 않습니다.')
+                return;
+            }
+        }
+        // 로그인 기능
         function sing_in() {
             let username = $("#input-username").val();
             let password = $("#input-password").val();
-
             if (username == "") {
                 $("#help-id-login").text("아이디를 입력해주세요.");
                 $("#input-username").focus();
@@ -42,7 +48,6 @@
             } else {
                 $("#help-id-login").text("");
             }
-
             if (password == "") {
                 $("#help-password-login").text("비밀번호를 입력해주세요.");
                 $("#input-password").focus();
@@ -67,8 +72,8 @@
                 },
             });
         }
-    </script>
 
+    </script>
 </head>
 <body>
 <!--전체 감싸주는 부분-->
@@ -85,16 +90,18 @@
                 <!--사용자가 포스팅 하기 위해 입력할 필드들-->
                 <div class="inputs">
                     <!--새 게시글 카테고리-->
-                    <div class="post_category">
+                    <div class="category">
                         <h4>카테고리</h4>
-                        <select id="categorys">
-                            <option selected>카테고리</option>
-                            <option value="algorithm">알고리즘/자료구조</option>
-                            <option value="front">프론트엔드</option>
-                            <option value="back">백엔드</option>
-                            <option value="hanghae">항해 정보</option>
-                            <option value="other">기타 정보</option>
-                        </select>
+                        <div class="post_category">
+                            <select id="categorys">
+                                <option selected>카테고리</option>
+                                <option value="algorithm">알고리즘/자료구조</option>
+                                <option value="front">프론트엔드</option>
+                                <option value="back">백엔드</option>
+                                <option value="hanghae">항해 정보</option>
+                                <option value="other">기타 정보</option>
+                            </select>
+                        </div>
                     </div>
                     <!--새 게시글 제목-->
                     <div class="post_title">
@@ -180,6 +187,7 @@
                             class="ID"
                             placeholder="아이디를 입력하세요"
                     />
+                    <button id="id-ckeck">아이디 확인</button>
                 </div>
                 <!--비밀번호(비번, 패스워드) 입력 필드-->
                 <div class="login_password">
@@ -189,9 +197,19 @@
                             id="sing_PW"
                             name="password"
                             class="PW"
-                            placeholder="비밀번호를 입력하세요"
+                            placeholder="비밀번호를 재입력하세요"
                     />
                 </div>
+                <div>
+                        <h4>비밀번호 확인</h4>
+                        <input
+                                type="password"
+                                id="sing_rePW"
+                                name="password"
+                                class="PW"
+                                placeholder="비밀번호를 입력하세요"
+                        />
+                    </div>
                 <!--회원가입 버튼-->
                 <button onclick="sing_up()">회원가입</button>
                 <!--로그인모달 불러오기 버튼-->
@@ -202,16 +220,24 @@
     <!--모달부분 끝-->
     <!--헤더부분 시작-->
     <header id="header">
-        <!--햄버거 메뉴 버튼-->
-        <button class="hamburger">
-            <i class="menuIcon material-icons">menu</i>
-        </button>
-        <!--항해99 로고-->
-        <h1 class="logo">
-            <a href="/"><img src="https://hanghae99.spartacodingclub.kr/static/images/logo.svg" alt="logo"/></a>
-        </h1>
+        <div class="left">
+            <!--햄버거 메뉴 버튼-->
+            <button class="hamburger">
+                <i class="menuIcon material-icons">menu</i>
+            </button>
+            <!--항해99 로고-->
+            <h1 class="logo">
+                <a href="/"><img src="../static/logo.jpg" alt="logo"/></a>
+            </h1>
+        </div>
         <!--로그인 버튼-->
         <button class="login" id="openModal">로그인</button>
+        <!-- 로그인 했을 때 보여지는 파트 -->
+        <div class="login_box hidden">
+            <div class="show_id"></div>
+            <button id="logout">로그아웃</button>
+            <a href={{url_for('mypage')}}>마이페이지</a>
+        </div>
     </header>
     <!--헤더부분 끝-->
     <!--메인부분 시작-->
@@ -219,41 +245,60 @@
         <!--사이드바 메뉴-->
         <aside id="sidebar">
             <ul>
-                <li class="active"><a href="/">
-                    <div class="menu">전체 보기</div>
-                </a></li>
-                <li><a href={{url_for('category', val='algorithm' )}}>
-                    <div class="menu">알고리즘<br>/ 자료구조</div>
-                </a></li>
-                <li><a href={{url_for('category', val='front' )}}>
-                    <div class="menu">프론트엔드</div>
-                </a></li>
-                <li><a href={{url_for('category', val='back' )}}>
-                    <div class="menu">백엔드</div>
-                </a></li>
-                <li><a href={{url_for('category', val='hanghae' )}}>
-                    <div class="menu">항해 소식</div>
-                </a></li>
-                <li><a href={{url_for('category', val='other' )}}>
-                    <div class="menu">기타 정보</div>
-                </a></li>
+                <div class="menu_padding"></div>
+                <div class="menu">
+                    <li class="active"><a href="/">
+                        <div class="menu_align">전체 보기</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='algorithm' )}}>
+                        <div class="menu_align">알고리즘/자료구조</span></div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='front' )}}>
+                        <div class="menu_align">프론트엔드</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='back' )}}>
+                        <div class="menu_align">백엔드</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='hanghae' )}}>
+                        <div class="menu_align">항해 소식</div>
+                    </a></li>
+                </div>
+                <div class="menu">
+                    <li><a href={{url_for('category', val='other' )}}>
+                        <div class="menu_align">기타 정보</div>
+                    </a></li>
+                </div>
             </ul>
         </aside>
         <!-- 여기 내부에 card들 들어올 예정 -->
         <section id="contents">
             {% for post in posting %}
-            <div class="card">
-                <h4>{{post['Title']}}</h4>
-                <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
-                <p class="description">{{post['Content']['comment']}}</p>
-            </div>
+            <a href={{url_for('post_view', ID=post['ID'])}}>
+                <div class="card">
+                    <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+                    <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                        %}</h4></div>
+                    <p class="description">{{post['Content']['comment']}}</p>
+                    <div class="card_time">{{post['Date']}}</div>
+                    <hr class="card_divide">
+                    <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true">  {{post['like']}}</i></div>
+                    <div class="card_author">{{post['Author']}}</div>
+                </div>
+            </a>
             {% endfor %}
             <!--포스팅 추가 버튼-->
             <button id="postModal">포스팅하기</button>
         </section>
     </main>
 </div>
-
 <!-- JQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
@@ -273,7 +318,6 @@
             isSidebar = true
         }
     })
-
     // 게시글 분류
     document.querySelectorAll('#sidebar > ul > li').forEach((list) => {
         list.addEventListener('click', (e) => {
@@ -284,8 +328,6 @@
             // 포스트 초기화 후 API 호출해서 카테고리별 포스트 가져와서 넣기
         })
     })
-
-
     // 모달창
     const modal = document.querySelector(".modal");
     const modalContents = document.querySelector(".modal__contents");
@@ -299,9 +341,7 @@
         document.querySelector('.register').classList.add('hidden')
         document.querySelector('.login').classList.remove('hidden')
         document.querySelector('.post').classList.add('hidden')
-
     });
-
     // 로그인 회원가입 창 토글
     document.querySelector('#toggleResister').addEventListener("click", () => {
         document.querySelector('.register').classList.remove('hidden')
@@ -311,14 +351,12 @@
         document.querySelector('.register').classList.add('hidden')
         document.querySelector('.login').classList.remove('hidden')
     })
-
     // 포스팅 박스
     document.querySelector('#postModal').addEventListener('click', () => {
         modal.classList.remove("hidden");
         document.querySelector('.post').classList.remove('hidden')
         document.querySelector('.login').classList.add('hidden')
     })
-
     // 포스팅 쓰기
     document.querySelector('.post button').addEventListener('click', () => {
         let c = document.getElementById("categorys");
@@ -333,10 +371,60 @@
             data: {category_give: category, title_give: title.value, url_give: url.value, desc_give: description.value},
             success: function (response) {
                 if (response['result'] === 'success') {
-                    // window.location.reload()
                     alert('성공')
+                    location.reload()
                 } else if (response['result'] === 'fail') {
                     alert(response['msg'])
+                }
+            }
+        })
+    })
+    // 로그인 상태인지 확인
+    function parseJwt (token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+        return JSON.parse(jsonPayload);
+    }
+    if (document.cookie) {
+        let id = parseJwt(document.cookie)['id']
+        document.querySelector('#openModal').classList.add('hidden')
+        document.querySelector('.login_box').classList.remove('hidden')
+        document.querySelector('.login_box .show_id').innerHTML = id + '님 반가워요'
+    }
+    // 로그아웃
+    document.querySelector('#logout').addEventListener('click', () => {
+        let proceed = confirm('정말 로그아웃 하시겠습니까?')
+        if (proceed) {
+            document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.querySelector('#openModal').classList.remove('hidden')
+            document.querySelector('.login_box').classList.add('hidden')
+            location.reload()
+        }
+    })
+
+    let category = "{{category}}"
+    let idx = ['algorithm', 'front', 'back', 'hanghae', 'other'].indexOf(category)
+    document.querySelectorAll('.menu li').forEach((li, index) => {
+      li.classList.remove('active')
+      if (index === idx+1) {
+        li.classList.add('active')
+      }
+    })
+    // 아이디 중복확인
+    document.querySelector('#id-ckeck').addEventListener('click', () => {
+        let ID = document.getElementById('sing_ID').value
+        $.ajax({
+            type: "POST",
+            url: "/sign_up/check_dup",
+            data: {username_give:ID},
+            success: function (response) {
+                if (response['result'] === 'success') {
+                    alert('사용할 수 있는 아이디입니다.')
+                }else{
+                    alert('사용할 수 없는 아이디입니다.')
                 }
             }
         })

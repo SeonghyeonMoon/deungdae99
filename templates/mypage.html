@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mypage</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/mypage.css">
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="modal hidden">
+        <div class="modal__contents">
+          <!--첫번째 모달 (게시글 입력)-->
+          <div class="withdrawal">
+            <h2>회원탈퇴</h2>
+            <div class="inputs">
+              <div class="withdrawal_password">
+                <h4>확인을 위해 비밀번호를 입력해주세요</h4>
+                <input
+                  type="password"
+                  id="input-password"
+                  name="password"
+                  class="PW"
+                  placeholder="비밀번호를 입력하세요"
+                />
+              </div>
+            </div>
+            <button onclick="sign_delete()">회원탈퇴</button>
+            <button id="closeModal">취소</button>
+          </div>
+        </div>
+      </div>
+      <header id="header">
+        <button class="hamburger">
+          <i class="menuIcon material-icons">menu</i>
+        </button>
+        <h1 class="logo">
+          <a href="/"
+            ><img
+              src="../static/logo.jpg"
+              alt="logo"
+          /></a>
+        </h1>
+        <h2 class="sub_title">마이페이지</h2>
+        <div class="id_box">
+          <h2><a href={{url_for('mypage')}}>{{myinfo['username']}}님 반갑습니다</a></h2>
+        </div>
+      </header>
+      <main id="main">
+        <aside id="sidebar">
+          <ul>
+<!--            <li>회원 정보 수정</li>-->
+            <li class="active">작성 글 관리</li>
+            <li id="openModal">회원 탈퇴</li>
+          </ul>
+        </aside>
+        <section id="contents">
+          <!-- 여기 내부에 card들 들어올 예정 -->
+          {% for post in posting %}
+          <a href={{url_for('post_view', ID=post['ID'])}}>
+            <div class="card">
+              <div class="thumbnail"><img class="thumbnail" src="{{post['Content']['img']}}"></div>
+              <div class="card_title"><h4>{{post['Title'][:15]}}{% if post['Title']|length > 14%}...{% endif
+                %}</h4></div>
+              <p class="description">{{post['Content']['comment']}}</p>
+              <div class="card_time">{{post['Date']}}</div>
+              <hr class="card_divide">
+              <div class="card_like"><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+              <button onclick="post_delete({{post['ID']}})" class="card_delete">삭제</button>
+            </div>
+          </a>
+          {% endfor %}
+        </section>
+      </main>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+      // 사이드바
+      let isSidebar = true;
+      document.querySelector(".hamburger").addEventListener("click", () => {
+        if (isSidebar) {
+          document.querySelector("#sidebar").classList.add("hidden");
+          document.querySelector("#contents").style.gridTemplateColumns =
+            "1fr 1fr 1fr 1fr 1fr";
+          document.querySelector("#contents").style.marginLeft = "-250px";
+          isSidebar = false;
+        } else {
+          document.querySelector("#sidebar").classList.remove("hidden");
+          document.querySelector("#contents").style.gridTemplateColumns =
+            "1fr 1fr 1fr 1fr";
+          document.querySelector("#contents").style.marginLeft = "0px";
+          isSidebar = true;
+        }
+      });
+
+      // 모달창
+      const modal = document.querySelector(".modal");
+      const modalContents = document.querySelector(".modal__contents");
+      console.log(document.querySelector("#openModal"));
+      document.querySelector("#openModal").addEventListener("click", () => {
+        modal.classList.remove("hidden");
+        modalContents.classList.add("appear");
+      });
+      document.querySelector("#closeModal").addEventListener("click", () => {
+        modal.classList.add("hidden");
+        modalContents.classList.remove("appear");
+        document.querySelector(".register").classList.add("hidden");
+        document.querySelector(".login").classList.remove("hidden");
+        document.querySelector(".post").classList.add("hidden");
+      });
+      // 회원 탈퇴
+      function sign_delete() {
+        let pw = document.getElementById('input-password').value
+        console.log(pw)
+        $.ajax({
+          type: "POST",
+          url: "/sign_delete",
+          data: {password_give: pw},
+          success: function (response) {
+            if (response['result'] === 'success') {
+              alert(response['msg'])
+              document.cookie = 'mytoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+              location.replace('/')
+            }
+            if (response['result'] === 'fail') {
+              alert(response['msg'])
+            }
+          }
+        })
+      }
+      // 글삭제
+      function post_delete(id) {
+        let proceed = confirm('정말 삭제 하시겠습니까?')
+        if (proceed) {
+          $.ajax({
+            type: "POST",
+            url: "/post_delete",
+            data: {id_give: id},
+            success: function (response) {
+              if (response['result'] === 'success') {
+                alert(response['msg'])
+                location.reload()
+              }
+            }
+          })
+        }
+      }
+    </script>
+  </body>
+</html>
