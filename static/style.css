@@ -211,7 +211,8 @@ li {
 }
 #hader .login_box .show_id {
   all: unset;
-  margin-right: 30px;
+  margin-top: 5px;
+  margin-right: 15px;
 }
 #header .login_box #logout {
   all: unset;
