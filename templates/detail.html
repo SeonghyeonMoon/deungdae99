@@ -189,8 +189,15 @@
       .post-link a {
         margin-top: 50px;
         text-decoration: none;
-        color: #202540;
+        color: #f50000;
         font-size: 30px;
+        padding: 5px;
+        transition: .3s;
+        border-radius: 5px;
+      }
+      .post-link a:hover {
+        background-color: #f50000;
+        color: #fff;
       }
       /*좋아요 버튼*/
       .like {
@@ -204,6 +211,10 @@
         font-weight: bold;
         cursor: pointer;
         font-size: 25px;
+        transition: .3s;
+      }
+      .like:hover {
+        background-color: rgba(245, 0, 0, 0.5);
       }
       .post-comment {
         margin-top: 20px;
@@ -337,7 +348,7 @@
         <div class="img"></div>
         <!--        포스팅 링크 들어갈 곳 -->
         <div class="post-link">
-          <h4><a href={{post['Content']['url']}} target="_blank">링크</a></h4>
+          <h4><a href={{post['Content']['url']}} target="_blank">링크로 이동</a></h4>
         </div>
         <h4 class="post-comment ">작성자 설명</h4>
         <p class="post-comment">
