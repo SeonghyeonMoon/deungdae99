@@ -209,7 +209,7 @@ li {
   font-weight: bold;
   display: flex;
 }
-#hader .login_box .show_id {
+#header .login_box .show_id {
   all: unset;
   margin-top: 5px;
   margin-right: 15px;
