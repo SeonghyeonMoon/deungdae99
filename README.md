@@ -25,7 +25,6 @@
 로그인|POST|/api/sign_in|User {"ID" : ID,"Password" : password}
 회원 가입|POST|/api/sign_up|User {"ID" : ID,"Password" : password,"Nicname" : name,"writepost" : [],"Readpost" : []}|
 회원 탈퇴|DELETE|/api/sign_delete|User {"ID" : ID}
-}
 
 
 
